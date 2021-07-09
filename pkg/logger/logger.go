@@ -44,6 +44,7 @@ func (l Level) String() string {
 type Logger struct {
 	newLogger *log.Logger
 	ctx       context.Context
+	level     Level
 	fields    Fields
 	callers   []string
 }
@@ -56,6 +57,12 @@ func NewLogger(w io.Writer, prefix string, flag int) *Logger {
 func (l *Logger) clone() *Logger {
 	nl := *l
 	return &nl
+}
+
+func (l *Logger) WithLevel(lv1 Level) *Logger {
+	l1 := l.clone()
+	l1.level = lv1
+	return l1
 }
 
 func (l *Logger) WithFields(f Fields) *Logger {
@@ -141,50 +148,50 @@ func (l *Logger) Output(level Level, message string) {
 	}
 }
 
-func (l *Logger) Debug(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelDebug, fmt.Sprint(v...))
+func (l *Logger) Debug(v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelDebug, fmt.Sprint(v...))
 }
 
-func (l *Logger) Debugf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelDebug, fmt.Sprintf(format, v...))
+func (l *Logger) Debugf(format string, v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelDebug, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Info(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelInfo, fmt.Sprint(v...))
+func (l *Logger) Info(v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelInfo, fmt.Sprint(v...))
 }
 
-func (l *Logger) Infof(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelInfo, fmt.Sprintf(format, v...))
+func (l *Logger) Infof(format string, v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelInfo, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Warn(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelWarn, fmt.Sprint(v...))
+func (l *Logger) Warn(v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelWarn, fmt.Sprint(v...))
 }
 
-func (l *Logger) Warnf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelWarn, fmt.Sprintf(format, v...))
+func (l *Logger) Warnf(format string, v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelWarn, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Error(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelError, fmt.Sprint(v...))
+func (l *Logger) Error(v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelError, fmt.Sprint(v...))
 }
 
-func (l *Logger) Errorf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelError, fmt.Sprintf(format, v...))
+func (l *Logger) Errorf(format string, v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelError, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Fatal(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelFatal, fmt.Sprint(v...))
+func (l *Logger) Fatal(v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelFatal, fmt.Sprint(v...))
 }
 
-func (l *Logger) Fatalf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelFatal, fmt.Sprintf(format, v...))
+func (l *Logger) Fatalf(format string, v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelFatal, fmt.Sprintf(format, v...))
 }
 
-func (l *Logger) Panic(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelPanic, fmt.Sprint(v...))
+func (l *Logger) Panic(v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelPanic, fmt.Sprint(v...))
 }
 
-func (l *Logger) Panicf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).Output(LevelPanic, fmt.Sprintf(format, v...))
+func (l *Logger) Panicf(format string, v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(LevelPanic, fmt.Sprintf(format, v...))
 }

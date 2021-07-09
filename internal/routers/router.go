@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"go-service/internal/middleware"
 	v1 "go-service/internal/routers/api/v1"
 
 	_ "go-service/docs"
@@ -14,6 +15,7 @@ func NewRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	r.Use(middleware.Translations())
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	article := v1.NewArticle()

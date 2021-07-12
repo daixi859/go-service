@@ -1,10 +1,12 @@
 package v1
 
 import (
+	"go-service/global"
 	"go-service/pkg/app"
+	"go-service/pkg/errcode"
 
-	"github.com/gin-gonic/gin")
-
+	"github.com/gin-gonic/gin"
+)
 
 type Tag struct{}
 
@@ -24,11 +26,11 @@ func NewTag() Tag {
 // @Router /api/v1/tags [get]
 func (t Tag) List(c *gin.Context) {
 	params := struct {
-		Name string `form:"name" binding:"max=100"`
-		State uint8 `form:"state,default=1" binding:"oneof=0 1"`
-	}
+		Name  string `form:"name" binding:"max=100"`
+		State uint8  `form:"state,default=1" binding:"oneof=0 1"`
+	}{}
 	response := app.NewResponse(c)
-	valid, errs := app.BindAndValid(c, &param)
+	valid, errs := app.BindAndValid(c, &params)
 	if valid == true {
 		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
 		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
